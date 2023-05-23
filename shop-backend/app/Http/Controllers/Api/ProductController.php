@@ -4,16 +4,26 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
 
 class ProductController extends Controller
 {
     public function fetchProducts() {
-        $client = new Client();
-        $response = $client->get('https://fakestoreapi.com/products');
+        $cacheKey = 'products';
+        $cacheDuration = 60;
 
-        $products = json_decode($response->getBody(), true);
+        if (Cache::has($cacheKey)) {
+            $products = Cache::get($cacheKey);
+        } else {
+            $client = new Client();
+            $response = $client->get('https://fakestoreapi.com/products');
+            $products = json_decode($response->getBody(), true);
 
-        return $products;
+            Cache::put($cacheKey, $products, $cacheDuration);
+        }
+        
+
+        return response()->json($products);
     }
 }

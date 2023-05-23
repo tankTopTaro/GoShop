@@ -36,7 +36,7 @@ export default function AuthLayout() {
             <Topbar token={token} user={user} logout={logout}/>
             <Navbar />
 
-            <Outlet token={token}/> 
+            <Outlet /> 
 
             <Footer />
             <BackToTop />

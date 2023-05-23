@@ -5,6 +5,7 @@ import Login from '../views/auth/Login'
 import Register from '../views/auth/Register'
 import { Home } from "../views/shop/Home";
 import NotFound from "../views/NotFound";
+import Shop from "../views/shop/Shop";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
                 path: '/home',
                 element: <Home />
             },
+            {
+                path: '/shop',
+                element: <Shop />
+            }
         ]
     },
     {
