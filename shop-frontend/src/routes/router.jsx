@@ -6,6 +6,9 @@ import Register from '../views/auth/Register'
 import { Home } from "../views/shop/Home";
 import NotFound from "../views/NotFound";
 import Shop from "../views/shop/Shop";
+import Contact from "../views/shop/Contact";
+import Cart from "../views/shop/Cart";
+import Wishlist from "../views/shop/Wishlist";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +26,19 @@ const router = createBrowserRouter([
             {
                 path: '/shop',
                 element: <Shop />
-            }
+            },
+            {
+                path: '/cart',
+                element: <Cart />
+            },
+            {
+                path: '/wishlist',
+                element: <Wishlist />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
+            },
         ]
     },
     {
@@ -37,6 +52,10 @@ const router = createBrowserRouter([
             {
                 path: '/register',
                 element: <Register />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
             },
         ]
     },

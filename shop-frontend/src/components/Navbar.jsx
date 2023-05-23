@@ -84,7 +84,7 @@ export const Navbar = () => {
                       style={{ paddingBottom: 2 }}>
                         {/* { totalWish > 0 ? totalWish : 0 } */}
                     </span>
-                    <i className="fas fa-shopping-cart text-primary" />
+                    <i className="fas fa-shopping-cart text-primary mx-3" />
                     <span
                       className="badge text-secondary border border-secondary rounded-circle"
                       style={{ paddingBottom: 2 }}>
