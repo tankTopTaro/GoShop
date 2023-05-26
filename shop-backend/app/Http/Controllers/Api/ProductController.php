@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -9,7 +10,7 @@ use GuzzleHttp\Client;
 
 class ProductController extends Controller
 {
-    public function fetchProducts() {
+    /* public function fetchProducts() {
         $cacheKey = 'products';
         $cacheDuration = 60;
 
@@ -23,6 +24,13 @@ class ProductController extends Controller
             Cache::put($cacheKey, $products, $cacheDuration);
         }
         
+
+        return response()->json($products);
+    } */
+
+    public function products() 
+    {
+        $products = Product::all();
 
         return response()->json($products);
     }

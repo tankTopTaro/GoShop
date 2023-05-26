@@ -53,6 +53,7 @@
 
 ## IMPLEMENTED FEATURES
 1.  USER LOGIN & REGISTRATION -> Users will now need to be registered in order to use the shop.
-2.  DISPLAY ALL PRODUCTS -> Fetching products is now handled by a backend controller.
+2.  FAKE STORE API PRODUCTS -> Products have been imported in its own database. Run `php artisan app:import-products` to run the Import command
+ 
 
 

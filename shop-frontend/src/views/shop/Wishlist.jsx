@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import FetchProduct from "../../data/FetchProduct";
+import { ShopContext } from "../../contexts/ShopContext";
+import WishlistItem from "./cart/WishlistItem";
 
 export default function Wishlist() {
+    const { products, loading, error } = FetchProduct('/products')
+    const { likeItems } = useContext(ShopContext)
+
     return (
         <div className="container-fluid">
             <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
@@ -17,7 +23,11 @@ export default function Wishlist() {
                             </tr>
                         </thead>
                         <tbody className="align-middle">
-                            WISHLIST ITEM
+                            {products.map((product) => {
+                                if (likeItems[product.id] !== false) {
+                                    return <WishlistItem key={product.id} data={product} />
+                                }
+                            })}
                         </tbody>
                     </table>
                 </div>

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import CustomLink from './CustomLink'
+import { ShopContext } from '../contexts/ShopContext'
 
 export const Navbar = () => {
+  const { getTotalWishlistItem, getTotalCartItem } = useContext(ShopContext)
+  const totalWish = getTotalWishlistItem()
+  const totalItem = getTotalCartItem()
 
   return (
     <>
@@ -78,17 +82,17 @@ export const Navbar = () => {
                   <CustomLink to="/contact">Contact</CustomLink>
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
-                    <i className="fas fa-heart text-primary" />
+                    <i className="fas fa-heart text-primary mx-1" />
                     <span
                       className="badge text-secondary border border-secondary rounded-circle"
                       style={{ paddingBottom: 2 }}>
-                        {/* { totalWish > 0 ? totalWish : 0 } */}
+                        { totalWish > 0 ? totalWish : 0 } 
                     </span>
-                    <i className="fas fa-shopping-cart text-primary mx-3" />
+                    <i className="fas fa-shopping-cart text-primary mx-1" />
                     <span
                       className="badge text-secondary border border-secondary rounded-circle"
                       style={{ paddingBottom: 2 }}>
-                        {/* { totalItem > 0 ? totalItem : 0 } */}
+                        { totalItem > 0 ? totalItem : 0 } 
                     </span>
                 </div>
               </div>

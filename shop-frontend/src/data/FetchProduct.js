@@ -11,7 +11,6 @@ export default function FetchProduct(endpoint) {
         const fetchProduct = async () => {
             try {
                 const response = await axiosClient.get(endpoint);
-                console.log(response.data)
                 const shuffledResponse = response.data.sort(() => 0.5 - Math.random())
                 setProducts(shuffledResponse)
                 setLoading(false)

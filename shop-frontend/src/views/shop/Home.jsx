@@ -8,11 +8,10 @@ import FetchProduct from "../../data/FetchProduct"
 export const Home = () => {
   const { products, loading, error } = FetchProduct('/products')
 
-  { loading && <div>Loading...</div> }
-  { error && <div>Error: {error}</div> }
-
   return (
     <div className='animate fadeIn'>
+      { loading && <div>Loading...</div> }
+      { error && <div>Error: {error}</div> }
       <Carousel />
       <Featured />
       <FeaturedProducts data={products}/>
