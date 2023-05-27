@@ -29,20 +29,24 @@
 ## CURRENT FEATURES IMPLEMENTED
 - [x] Responsive Web Design
 - [x] Display all products   
-- [ ] View product
-- [ ] Add to cart
-- [ ] Add to wishlist
+- [x] View product
+- [x] Add to cart
+- [x] Add to wishlist
 - [ ] Search Product
 - [ ] Sort Product by Category
 - [x] User Login
 - [x] User Registration 
+- Databases:
+    - [x] User Table
+    - [x] Products Table
+    - [ ] Cart Items Table
 
 ---
 
 ## ADDITIONAL POST-RELEASE FEATURES (OPTIONAL)
 - [ ] Cart checkout
 - [ ] Admin Dashboard
-- [ ] Database
+
 --- 
 
 ## BUGS | ISSUES
