@@ -34,4 +34,11 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    public function show($pid)
+    {
+        $product = Product::find($pid);
+
+        return response()->json($product);
+    }
 }

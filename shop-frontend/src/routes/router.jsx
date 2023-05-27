@@ -9,6 +9,7 @@ import Shop from "../views/shop/Shop";
 import Contact from "../views/shop/Contact";
 import Cart from "../views/shop/Cart";
 import Wishlist from "../views/shop/Wishlist";
+import ProductDetail from "../views/shop/products/ProductDetail";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: '/shop',
                 element: <Shop />
+            },
+            {
+                path: '/products/:pid',
+                element: <ProductDetail />
             },
             {
                 path: '/cart',
