@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../../contexts/ShopContext'
+import { BsCartPlusFill, BsCartDashFill } from 'react-icons/bs'
 
 const CartItem = (props) => {
     const { cartItems, addToCart, removeFromCart, deleteFromCart, updateCartItemCount } = useContext(ShopContext)
@@ -13,25 +14,27 @@ const CartItem = (props) => {
                 <img src={ props.data.image } alt='#' style={{width: '50px'}} />
             </td>
             <td className="align-middle">$ { props.data.price }</td>
-            <td className="align-middle \">
-                <div className="input-group quantity mx-auto" style={{width: '100px'}}>
-                    <div className="input-group-btn d-flex flex-row align-items-center justify-content-center">
-                        <button className="btn btn-sm btn-primary btn-minus" onClick={() => removeFromCart(props.data.id)}>
-                            <i className="fa fa-minus" />
-                        </button>
-                        <div className="input-group-prepend">
-                            <input type="number" className="form-control-sm bg-secondary border-0 text-center" value={ cartItems[props.data.id] } onChange={(e) => updateCartItemCount(Number(e.target.value), props.data.id)}/>
+            <td className="align-middle">
+                    <div className="input-group quantity mx-auto" style={{width: '130px'}}>
+                        <div className="input-group-btn">
+                            <button className="btn btn-primary btn-minus" onClick={() => removeFromCart(props.data.id)}>
+                                <BsCartDashFill />
+                            </button>
                         </div>
-                        <button className="btn btn-sm btn-primary btn-plus" onClick={() => addToCart(props.data.id)}>
-                            <i className="fa fa-plus" />
-                        </button>
+                            <input type="number" className="form-control bg-secondary border-0 text-center h-auto" value={cartItems[props.data.id]} onChange={(e) => updateCartItemCount(Number(e.target.value), props.data.id)}/>
+                        <div className="input-group-btn">
+                            <button className="btn btn-primary btn-plus" onClick={() => addToCart(props.data.id)}>
+                                <BsCartPlusFill />
+                            </button>
+                        </div>
                     </div>
-                </div>
             </td>
             <td className="align-middle">
-                <button className="btn btn-sm btn-danger" onClick={() => deleteFromCart(props.data.id)}>
-                    <i className="fa fa-times" />
-                </button>
+                <div className="input-group quantity mx-auto" style={{width: '100px'}}>
+                    <button className="btn btn-sm btn-danger " style={{width: '35px'}} onClick={() => deleteFromCart(props.data.id)}>
+                        <i className="fa fa-times" />
+                    </button>
+                </div>
             </td>
         </tr>
         </>

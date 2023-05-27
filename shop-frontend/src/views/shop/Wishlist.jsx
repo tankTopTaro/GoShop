@@ -17,9 +17,9 @@ export default function Wishlist() {
                     <table className="table table-light table-borderless table-hover text-center mb-0">
                         <thead className="thead-dark">
                             <tr>
-                                <th>Products</th>
-                                <th>Price</th>
-                                <th>Remove</th>
+                                <th className="text-center">Products</th>
+                                <th className="text-center">Price</th>
+                                <th className="text-center">Remove</th>
                             </tr>
                         </thead>
                         <tbody className="align-middle">

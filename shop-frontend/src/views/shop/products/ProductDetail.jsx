@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BsCartPlusFill, BsCartDashFill } from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
 import FetchProductDetail from '../../../data/FetchProductDetail'
+import { ShopContext } from '../../../contexts/ShopContext'
 
 const ProductDetail = () => {
     const productId = useParams()
     const { product, loading, error } = FetchProductDetail(productId.pid)
+    const { cartItems, addToCart, removeFromCart, updateCartItemCount } = useContext(ShopContext)
 
     { loading && <div>Loading...</div> }
     { error && <div>Error: {error}</div> }
@@ -34,13 +36,13 @@ const ProductDetail = () => {
                         <div className="d-flex align-items-center mb-4 pt-2">
                             <div className="input-group quantity mr-3" style={{width: '130px'}}>
                                 <div className="input-group-btn">
-                                    <button className="btn btn-primary btn-minus">
+                                    <button className="btn btn-primary btn-minus" onClick={() => removeFromCart(product.id)}>
                                         <BsCartDashFill />
                                     </button>
                                 </div>
-                                    <input type="number" className="form-control bg-secondary border-0 text-center h-auto"/>
+                                    <input type="number" className="form-control bg-secondary border-0 text-center h-auto" value={cartItems[product.id]} onChange={(e) => updateCartItemCount(Number(e.target.value), product.id)}/>
                                 <div className="input-group-btn">
-                                    <button className="btn btn-primary btn-plus">
+                                    <button className="btn btn-primary btn-plus" onClick={() => addToCart(product.id)}>
                                         <BsCartPlusFill />
                                     </button>
                                 </div>

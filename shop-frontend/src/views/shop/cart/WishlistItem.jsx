@@ -12,9 +12,11 @@ const WishlistItem = (props) => {
             </td>
             <td className="align-middle">$ {props.data.price}</td>
             <td className="align-middle">
-                <button className="btn btn-sm btm-danger" onClick={() => addToLikes(props.data.id)}>
-                    <i className="fa fa-times" />
-                </button>
+                <div className="input-group quantity mx-auto" style={{width: '130px'}}>
+                    <button className="btn btn-sm btm-danger" style={{width: '35px'}} onClick={() => addToLikes(props.data.id)}>
+                        <i className="fa fa-times" />
+                    </button>
+                </div>
             </td>
         </tr>
         </>
