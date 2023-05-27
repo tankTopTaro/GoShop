@@ -22,6 +22,7 @@ const getDefaultCart = () => {
 export const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState(getDefaultCart())
     const [likeItems, setLikeItems] = useState(getDefaultWisList())
+    const [total, setTotal] = useState(0)
 
     const getTotalWishlistItem = () => {
         let totalLikes = 0
@@ -43,10 +44,8 @@ export const ShopContextProvider = (props) => {
         let totalAmount = 0
         for (const item of data) {
             const { price } = item
-            console.log(price)
             totalAmount += parseFloat(price)
         }
-        console.log(totalAmount)
         return parseFloat(totalAmount.toFixed(2))
     }
 
@@ -69,6 +68,12 @@ export const ShopContextProvider = (props) => {
         axiosClient.post('/cart/add', payload)
             .then((response) => {
                 const updatedQuantity = response.data.quantity
+                const itemPrice = response.data.price
+                const updatedItemPrice = itemPrice * updatedQuantity
+
+                updateCartItemCount(updatedQuantity, itemId)
+
+                updateItemPrice(updatedItemPrice, itemId)
                 
                 setCartItems((prev) => ({
                     ...prev, [itemId]: updatedQuantity
@@ -104,13 +109,22 @@ export const ShopContextProvider = (props) => {
         }))
     }
 
+    const updateItemPrice = (newPrice, itemId) => {
+        setTotal((prev) => ({
+            ...prev, [itemId]: newPrice
+        }))
+    }
+
     const contextValue = {
         cartItems,
         setCartItems,
         getTotalCartAmount,
+        total,
+        setTotal,
         addToCart,
         removeFromCart,
         updateCartItemCount,
+        updateItemPrice,
         deleteFromCart,
         getTotalCartItem,
         likeItems,

@@ -59,9 +59,10 @@ class CartController extends Controller
 
         $response = [
             'message' => 'Item added to cart successfully.',
+            'product_id' => $carts->product_id,
             'quantity' => $carts->quantity,
             'image' => $carts->image,
-            'price' => $cart->price,
+            'price' => $carts->price,
         ];
 
         return Response::json($response, 200);

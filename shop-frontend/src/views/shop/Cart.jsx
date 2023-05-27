@@ -5,15 +5,14 @@ import CartItem from "./cart/CartItem";
 import FetchCart from "../../data/FetchCart";
 
 export default function Cart() {
+    const { cart } = FetchCart()
     const { products, loading, error } = FetchProduct('/products')
     const { cartItems, getTotalCartAmount } = useContext(ShopContext)
-    
-    { loading && <div>Loading...</div> }
-    { error && <div>Error: {error}</div> }
-
-    const { cart } = FetchCart()
 
     const totalAmount = getTotalCartAmount(cart)
+
+    { loading && <div>Loading...</div> }
+    { error && <div>Error: {error}</div> }
 
     return (
         <div className="container-fluid">
