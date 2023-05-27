@@ -2,15 +2,18 @@ import React, { useContext } from "react";
 import FetchProduct from "../../data/FetchProduct";
 import { ShopContext } from "../../contexts/ShopContext";
 import CartItem from "./cart/CartItem";
+import FetchCart from "../../data/FetchCart";
 
 export default function Cart() {
     const { products, loading, error } = FetchProduct('/products')
     const { cartItems, getTotalCartAmount } = useContext(ShopContext)
-    const totalAmount = getTotalCartAmount(products)
-    
     
     { loading && <div>Loading...</div> }
     { error && <div>Error: {error}</div> }
+
+    const { cart } = FetchCart()
+
+    const totalAmount = getTotalCartAmount(cart)
 
     return (
         <div className="container-fluid">
@@ -26,9 +29,9 @@ export default function Cart() {
                             </tr>
                         </thead>
                         <tbody className="align-middle">
-                            {products.map((product) => {
-                                if (cartItems[product.id] !== 0) {
-                                    return <CartItem key={product.id} data={product} />
+                            {cart.map((item) => {
+                                if(cartItems[item.id] !== 0) {
+                                    return <CartItem key={item.id} data={item} />
                                 }
                             })}
                         </tbody>

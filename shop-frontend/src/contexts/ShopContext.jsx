@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react"
+import axiosClient from '../api/axios-client'
 
 export const ShopContext = createContext(null)
 
@@ -40,16 +41,13 @@ export const ShopContextProvider = (props) => {
 
     const getTotalCartAmount = (data) => {
         let totalAmount = 0
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                console.log(data)
-                let itemInfo = data.find((product) => product.id === Number(item))
-                if (itemInfo && itemInfo.price) {
-                    totalAmount += cartItems[item] * itemInfo.price
-                }
-            }
+        for (const item of data) {
+            const { price } = item
+            console.log(price)
+            totalAmount += parseFloat(price)
         }
-        return totalAmount
+        console.log(totalAmount)
+        return parseFloat(totalAmount.toFixed(2))
     }
 
     const getTotalCartItem = () => {
@@ -63,15 +61,35 @@ export const ShopContextProvider = (props) => {
     }
 
     const addToCart = (itemId) => {
-        setCartItems((prev) => ({
-            ...prev, [itemId]: prev[itemId] + 1
-        }))
+        const payload = {
+            product_id: itemId,
+            quantity: cartItems[itemId] + 1,
+        }
+
+        axiosClient.post('/cart/add', payload)
+            .then((response) => {
+                const updatedQuantity = response.data.quantity
+                
+                setCartItems((prev) => ({
+                    ...prev, [itemId]: updatedQuantity
+                }))
+            })
+            .catch((error) => {
+                console.log(error)
+            })     
     }
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({
+        axiosClient.post('/cart/remove', { product_id: itemId, user_id: userId })
+            .then((response) => {
+                setCartItems(response.data.cartItems)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        /* setCartItems((prev) => ({
             ...prev, [itemId]: prev[itemId] - 1
-        }))
+        })) */
     }
 
     const deleteFromCart = (itemId) => {

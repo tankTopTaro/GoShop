@@ -11,7 +11,7 @@ export default function Register() {
 
     const [errors, setErrors] = useState(null)
 
-    const {setUser, setToken} = useStateContext()
+    const {setUser, setToken, setUserId} = useStateContext()
 
     const submit = (e) => {
         e.preventDefault()
@@ -27,6 +27,7 @@ export default function Register() {
             .then(({data}) => {
                 setUser(data.user)
                 setToken(data.token)
+                setUserId(data.user.id)
             })
             .catch(err => {
                 const response = err.response
