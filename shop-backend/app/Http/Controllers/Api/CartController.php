@@ -15,29 +15,43 @@ class CartController extends Controller
         $user = auth()->user();
         $carts = $user->carts;
 
-        return response()->json($carts);
+        $totalPrice = $carts->sum('price');
+
+        $totalItems = 0;
+        foreach ($carts as $cart) {
+            $totalItems += $cart->quantity;
+        }
+
+        $cartItems = [];
+        foreach ($carts as $cart) {
+            $product = Product::find($cart->product_id);
+
+            if ($product) {
+                $cartItems[] = [
+                    'product_id' => $cart->product_id,
+                    'quantity' => $cart->quantity,
+                    'image' => $cart->image,
+                    'normalPrice' => $product->price,
+                    'subtotal' => $cart->price * $cart->quantity,
+                ];
+            }
+        }
+
+        $response = [
+            'carts' => $carts,
+            'totalPrice' => $totalPrice,
+            'totalItems' => $totalItems,
+            'cartItems' => $cartItems,
+        ];
+
+        return response()->json($response);
     }
 
     public function addToCart(Request $request)
     {
-        /* $cart = new Cart();
-        $cart->user_id = auth()->user()->id;
-        $cart->product_id = $request->input('product_id');
-        $cart->quantity = $request->input('quantity');
-        $cart->save();
-
-        $updatedCartItems = $cart->user->cartItems;
-
-        $response = [
-            'message' => 'Item added to cart successfully.',
-            'cartItems' => $updatedCartItems,
-        ]; */
-
-        //return response()->json(['message' => 'Item added to cart successfully.'], 200);
-        //return response()->json();
-
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
+        $price = $request->input('price');
 
         $product = Product::findOrFail($productId);
 
@@ -45,7 +59,7 @@ class CartController extends Controller
 
         if ($carts) {
             $carts->quantity += 1;
-            $carts->price = $quantity*$product->price;
+            $carts->price = $price;
             $carts->save();
         } else {
             $carts = new Cart();
@@ -58,11 +72,7 @@ class CartController extends Controller
         }
 
         $response = [
-            'message' => 'Item added to cart successfully.',
-            'product_id' => $carts->product_id,
-            'quantity' => $carts->quantity,
-            'image' => $carts->image,
-            'price' => $carts->price,
+            'message' => 'Item added to cart successfully.'
         ];
 
         return Response::json($response, 200);

@@ -1,136 +1,69 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useEffect, useState } from "react"
 import axiosClient from '../api/axios-client'
 
 export const ShopContext = createContext(null)
 
-const getDefaultWisList = () => {
-    let wishlist = {}
-    for (let i = 1; i < 20 + 1; i++) {
-        wishlist[i] = false
-    }
-    return wishlist
-}
-
-const getDefaultCart = () => {
-    let cart = {}
-    for (let i = 1; i < 20 + 1; i++) {
-        cart[i] = 0
-    }
-    return cart
-}
-
 export const ShopContextProvider = (props) => {
-    const [cartItems, setCartItems] = useState(getDefaultCart())
-    const [likeItems, setLikeItems] = useState(getDefaultWisList())
-    const [total, setTotal] = useState(0)
+    const [cart, setCart] = useState([])
+    const [cartItem, setCartItem] = useState([])
+    const [totalItems, setTotalItems] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
 
-    const getTotalWishlistItem = () => {
-        let totalLikes = 0
-        for (const item in likeItems) {
-            if (likeItems[item] === true) {
-                totalLikes += 1
-            }
+    useEffect(() => {
+        const storedCarts = localStorage.getItem('carts')
+        const storedCartItems = localStorage.getItem('cartItems')
+        const storedTotalItems = localStorage.getItem('totalItems')
+        const storedTotalPrice = localStorage.getItem('totalPrice')
+
+        if (storedCarts && storedCartItems && storedTotalItems && storedTotalPrice) {
+            setCart(JSON.parse(storedCarts))
+            setCartItem(JSON.parse(storedCartItems))
+            setTotalItems(JSON.parse(storedTotalItems))
+            setTotalPrice(JSON.parse(storedTotalPrice))
+        } else {
+            // Data not found in localStorage, fetch from the server
+            getNewData()
         }
-        return totalLikes
+    }, [])
+
+    const getNewData = () => {
+        axiosClient.get('/cart')
+            .then((response) => {
+                const { carts, cartItems, totalItems, totalPrice } = response.data
+                setCart(carts)
+                setCartItem(cartItems)
+                setTotalItems(totalItems)
+                setTotalPrice(totalPrice)
+
+                localStorage.setItem('carts', JSON.stringify(carts))
+                localStorage.setItem('cartItems', JSON.stringify(cartItems))
+                localStorage.setItem('totalItems', JSON.stringify(totalItems))
+                localStorage.setItem('totalPrice', JSON.stringify(totalPrice))
+            })
     }
 
-    const addToLikes = (itemId) => {
-        setLikeItems((prev) => ({
-            ...prev, [itemId] : !prev[itemId]
-        }))
-    }
-
-    const getTotalCartAmount = (data) => {
-        let totalAmount = 0
-        for (const item of data) {
-            const { price } = item
-            totalAmount += parseFloat(price)
-        }
-        return parseFloat(totalAmount.toFixed(2))
-    }
-
-    const getTotalCartItem = () => {
-        let totalItems = 0
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                totalItems += cartItems[item]
-            }
-        }
-        return totalItems
-    }
-
-    const addToCart = (itemId) => {
+    const addToCart = (itemId, price) => {
         const payload = {
             product_id: itemId,
-            quantity: cartItems[itemId] + 1,
+            price: price,
+            quantity: 1,
         }
-
+        
         axiosClient.post('/cart/add', payload)
-            .then((response) => {
-                const updatedQuantity = response.data.quantity
-                const itemPrice = response.data.price
-                const updatedItemPrice = itemPrice * updatedQuantity
-
-                updateCartItemCount(updatedQuantity, itemId)
-
-                updateItemPrice(updatedItemPrice, itemId)
-                
-                setCartItems((prev) => ({
-                    ...prev, [itemId]: updatedQuantity
-                }))
+            .then(response => {
+                localStorage.removeItem('totalPrice')
+                getNewData()
+            }).catch(error => {
+                console.error(error)
             })
-            .catch((error) => {
-                console.log(error)
-            })     
-    }
-
-    const removeFromCart = (itemId) => {
-        axiosClient.post('/cart/remove', { product_id: itemId, user_id: userId })
-            .then((response) => {
-                setCartItems(response.data.cartItems)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        /* setCartItems((prev) => ({
-            ...prev, [itemId]: prev[itemId] - 1
-        })) */
-    }
-
-    const deleteFromCart = (itemId) => {
-        setCartItems((prev) => ({
-            ...prev, [itemId]: 0
-        }))
-    }
-
-    const updateCartItemCount = (newAmount, itemId) => {
-        setCartItems((prev) => ({
-            ...prev, [itemId]: newAmount
-        }))
-    }
-
-    const updateItemPrice = (newPrice, itemId) => {
-        setTotal((prev) => ({
-            ...prev, [itemId]: newPrice
-        }))
     }
 
     const contextValue = {
-        cartItems,
-        setCartItems,
-        getTotalCartAmount,
-        total,
-        setTotal,
+        cart,
+        cartItem,
+        totalItems,
+        totalPrice,
         addToCart,
-        removeFromCart,
-        updateCartItemCount,
-        updateItemPrice,
-        deleteFromCart,
-        getTotalCartItem,
-        likeItems,
-        setLikeItems,
-        addToLikes,
-        getTotalWishlistItem
     }
 
     return (

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CustomLink from './CustomLink'
 import { ShopContext } from '../contexts/ShopContext'
 
 export const Navbar = () => {
-  const { getTotalWishlistItem, getTotalCartItem } = useContext(ShopContext)
-  const totalWish = getTotalWishlistItem()
-  const totalItem = getTotalCartItem()
+  const { totalItems } = useContext(ShopContext)
+
+  const totalWish = 0
 
   return (
     <>
@@ -92,7 +92,7 @@ export const Navbar = () => {
                     <span
                       className="badge text-secondary border border-secondary rounded-circle"
                       style={{ paddingBottom: 2 }}>
-                        { totalItem > 0 ? totalItem : 0 } 
+                        { totalItems > 0 ? totalItems : 0 } 
                     </span>
                 </div>
               </div>

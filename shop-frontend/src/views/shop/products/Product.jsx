@@ -4,7 +4,9 @@ import { TrucateText } from '../../../components/TrucateText'
 import { ShopContext } from '../../../contexts/ShopContext' 
 
 export default function Product({ data, maxLength }) {
-    const { addToCart, likeItems, addToLikes } = useContext(ShopContext)
+    const { addToCart, cartItem } = useContext(ShopContext)
+
+    console.log(cartItem)
 
     return (
         <>
@@ -14,11 +16,11 @@ export default function Product({ data, maxLength }) {
                     <div className="product-img position-relative overflow-hidden">
                         <img className="img-fluid w-100" src={product.image} alt="" />
                             <div className="product-action">
-                                <Link className={'btn btn-outline-dark btn-square'} onClick={() => addToCart(product.id)}>
+                                <Link className={'btn btn-outline-dark btn-square'} onClick={() => addToCart(product.id, product.price)}>
                                     <i className="fas fa-shopping-cart" />
                                 </Link>
-                                <Link className="btn btn-outline-dark btn-square" onClick={() => addToLikes(product.id)}>
-                                    <i className="fas fa-heart" style={{color: likeItems[product.id] !== true ? '' : 'red',}} />
+                                <Link className="btn btn-outline-dark btn-square" /* onClick={() => addToLikes(product.id)} */>
+                                    <i className="fas fa-heart" /* style={{color: likeItems[product.id] !== true ? '' : 'red',}} */ />
                                 </Link>
                             </div>
                     </div>

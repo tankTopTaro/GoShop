@@ -1,18 +1,11 @@
-import React, { useContext } from "react";
-import FetchProduct from "../../data/FetchProduct";
+import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../../contexts/ShopContext";
 import CartItem from "./cart/CartItem";
-import FetchCart from "../../data/FetchCart";
 
 export default function Cart() {
-    const { cart } = FetchCart()
-    const { products, loading, error } = FetchProduct('/products')
-    const { cartItems, getTotalCartAmount } = useContext(ShopContext)
+    const { cart, cartItem, totalPrice } = useContext(ShopContext)
 
-    const totalAmount = getTotalCartAmount(cart)
-
-    { loading && <div>Loading...</div> }
-    { error && <div>Error: {error}</div> }
+    const totalAmount = cartItem.map(item => item.normalPrice * item.quantity).reduce((total, price) => total + price, 0)
 
     return (
         <div className="container-fluid">
@@ -28,10 +21,11 @@ export default function Cart() {
                             </tr>
                         </thead>
                         <tbody className="align-middle">
-                            {cart.map((item) => {
-                                if(cartItems[item.id] !== 0) {
-                                    return <CartItem key={item.id} data={item} />
+                            {cartItem.map((item) => {
+                                if(item.quantity !== 0) {
+                                    return <CartItem key={item.product_id} data={item} />
                                 }
+                                return null
                             })}
                         </tbody>
                     </table>
@@ -44,8 +38,8 @@ export default function Cart() {
                         { totalAmount > 0 ? 
                             <div className="border-bottom pt-2">
                                 <div className="d-flex justify-content-between mt-3">
-                                    <h5>Subtotal</h5>
-                                    <h5>$ {Number(totalAmount).toFixed(2)}</h5>
+                                    <h5>Subtotal</h5> 
+                                    <h5>$ {parseFloat(totalAmount).toFixed(2)} </h5>
                                 </div>
                                 <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed to Checkout</button>
                             </div> : <h1>Your Cart is Empty</h1> }

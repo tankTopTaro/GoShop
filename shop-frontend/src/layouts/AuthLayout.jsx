@@ -20,7 +20,11 @@ export default function AuthLayout() {
             .then(() => {
                 setUser({})
                 setToken(null)
+                localStorage.removeItem('carts')
+                localStorage.removeItem('totalPrice')
+                localStorage.removeItem('totalItems')
                 localStorage.clear()
+                window.location.reload()
             })
     }
 
