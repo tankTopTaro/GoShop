@@ -111,6 +111,29 @@ class CartController extends Controller
         return Response::json($response, 200);
     }
 
+    public function deleteFromCart(Request $request) 
+    {
+        $productId = $request->input('product_id');
+
+        $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $productId)->first();
+
+        if ($cart) {
+            $cart->delete();
+
+            $response = [
+                'message' => 'Item deleted from cart successfully.'
+            ];
+
+            return Response::json($response, 200);
+        } else {
+            $response = [
+                'message' => 'Item not found in the cart.'
+            ];
+
+            return Response::json($response, 404);
+        }
+    }
+
     public function updateCartItemCount(Request $request)
     {
         $productId = $request->input('product_id');
@@ -157,7 +180,8 @@ class CartController extends Controller
                 $carts->save();
             } else {
                 $carts->is_wishlisted = false;
-                $carts->save();
+
+                $carts->delete();
             }
         }  else {
             $carts = new Cart();

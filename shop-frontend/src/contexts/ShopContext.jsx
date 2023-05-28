@@ -97,6 +97,20 @@ export const ShopContextProvider = (props) => {
             })
     }
 
+    const deleteFromCart = (itemId) => {
+        const payload = {
+            product_id: itemId,
+        }
+
+        axiosClient.post('/cart/delete', payload)
+            .then(response => {
+                localStorage.removeItem('totalPrice')
+                getNewData()
+            }).catch(error => {
+                console.error(error)
+            })
+    }
+
     const wishlistItem = (itemId) => {
         const payload = {
             product_id: itemId,
@@ -122,6 +136,7 @@ export const ShopContextProvider = (props) => {
         addToCart,
         removeFromCart,
         updateCartItemCount,
+        deleteFromCart,
         wishlistItem
     }
 

@@ -3,7 +3,7 @@ import { ShopContext } from '../../../contexts/ShopContext'
 import { BsCartPlusFill, BsCartDashFill } from 'react-icons/bs'
 
 const CartItem = (props) => {
-    const { addToCart, removeFromCart, updateCartItemCount } = useContext(ShopContext)
+    const { addToCart, removeFromCart, updateCartItemCount, deleteFromCart } = useContext(ShopContext)
 
     const updateItem = (e, productId) => {
         e.preventDefault()
@@ -37,7 +37,7 @@ const CartItem = (props) => {
             </td>
             <td className="align-middle">
                 <div className="input-group quantity mx-auto" style={{width: '100px'}}>
-                    <button className="btn btn-sm btn-danger " style={{width: '35px'}} /* onClick={() => deleteFromCart(props.data.product_id)} */>
+                    <button className="btn btn-sm btn-danger " style={{width: '35px'}} onClick={() => deleteFromCart(props.data.product_id)}>
                         <i className="fa fa-times" />
                     </button>
                 </div>
