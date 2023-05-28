@@ -3,7 +3,7 @@ import { ShopContext } from '../../../contexts/ShopContext'
 import { BsCartPlusFill, BsCartDashFill } from 'react-icons/bs'
 
 const CartItem = (props) => {
-    const { addToCart } = useContext(ShopContext)
+    const { addToCart, removeFromCart } = useContext(ShopContext)
     return (
         <>
         <tr key={ props.data.product_id }>
@@ -14,7 +14,7 @@ const CartItem = (props) => {
             <td className="align-middle">
                     <div className="input-group quantity mx-auto" style={{width: '130px'}}>
                         <div className="input-group-btn">
-                            <button className="btn btn-primary btn-minus" /* onClick={() => removeFromCart(props.data.product_id)} */>
+                            <button className="btn btn-primary btn-minus" onClick={() => removeFromCart(props.data.product_id)} >
                                 <BsCartDashFill />
                             </button>
                         </div>

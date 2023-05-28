@@ -80,9 +80,31 @@ class CartController extends Controller
 
     public function removeFromCart(Request $request)
     {
-        $cartId = $request->input('cart_id');
-        Cart::destroy($cartId);
+        $productId = $request->input('product_id');
 
-        return redirect()->back()->with('success', 'Item removed from cart successfully');
+        $product = Product::findOrFail($productId);
+
+        $carts = Cart::where('user_id', auth()->user()->id)->where('product_id', $productId)->first();
+
+        if ($carts) {
+            if ($carts->quantity > 1) {
+                $carts->quantity -= 1;
+                $carts->save();
+            } else {
+                $carts->delete();
+            }
+
+            $response = [
+                'message' => 'Item remove from cart successfully.'
+            ];
+        }  else {
+            $response = [
+                'message' => 'Item not found in cart.'
+            ];
+        }
+
+        
+
+        return Response::json($response, 200);
     }
 }

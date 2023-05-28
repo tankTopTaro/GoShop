@@ -22,9 +22,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
-    Route::post('/cart/add', [CartController::class, 'addToCart']);
+    
     Route::get('/cart', [CartController::class, 'cart']);
+    Route::post('/cart/add', [CartController::class, 'addToCart']);
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
     
@@ -34,6 +36,3 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/products', [ProductController::class, 'products']);
 Route::get('/products/{pid}', [ProductController::class, 'show']);
-
-
-Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');

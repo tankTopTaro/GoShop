@@ -58,12 +58,27 @@ export const ShopContextProvider = (props) => {
             })
     }
 
+    const removeFromCart = (itemId) => {
+        const payload = {
+            product_id: itemId,
+        }
+
+        axiosClient.post('/cart/remove', payload)
+            .then(response => {
+                localStorage.removeItem('totalPrice')
+                getNewData()
+            }).catch(error => {
+                console.error(error)
+            }) 
+    }
+
     const contextValue = {
         cart,
         cartItem,
         totalItems,
         totalPrice,
         addToCart,
+        removeFromCart
     }
 
     return (
