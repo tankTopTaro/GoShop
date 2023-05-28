@@ -22,10 +22,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    
+
     Route::get('/cart', [CartController::class, 'cart']);
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
+    Route::post('/cart/update', [CartController::class, 'updateCartItemCount']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

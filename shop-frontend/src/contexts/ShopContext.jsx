@@ -72,13 +72,29 @@ export const ShopContextProvider = (props) => {
             }) 
     }
 
+    const updateCartItemCount = (itemId, newAmount) => {
+        const payload = {
+            product_id: itemId,
+            quantity: newAmount
+        }
+
+        axiosClient.post('/cart/update', payload)
+            .then(response => {
+                localStorage.removeItem('totalPrice')
+                getNewData()
+            }).catch(error => {
+                console.error(error)
+            })
+    }
+
     const contextValue = {
         cart,
         cartItem,
         totalItems,
         totalPrice,
         addToCart,
-        removeFromCart
+        removeFromCart,
+        updateCartItemCount
     }
 
     return (

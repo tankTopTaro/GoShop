@@ -103,7 +103,36 @@ class CartController extends Controller
             ];
         }
 
-        
+        return Response::json($response, 200);
+    }
+
+    public function updateCartItemCount(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity');
+
+        $carts = Cart::where('user_id', auth()->user()->id)->where('product_id', $productId)->first();
+
+        if ($carts) {
+            if ($carts->quantity > 0) {
+                $carts->quantity = $quantity;
+                $carts->save();
+
+                $response = [
+                    'message' => 'Item updated successfully.'
+                ];
+            } else {
+                $carts->delete();
+
+                $response = [
+                    'message' => 'Item remove from cart successfully.'
+                ];
+            }
+        }  else {
+            $response = [
+                'message' => 'Item not found in cart.'
+            ];
+        }
 
         return Response::json($response, 200);
     }
