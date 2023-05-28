@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
+            $table->string('image')->nullable();
+            $table->decimal('price', 8, 2)->default(0.0);
+            $table->boolean('is_wishlisted')->default(false);
             $table->timestamps();
         });
     }

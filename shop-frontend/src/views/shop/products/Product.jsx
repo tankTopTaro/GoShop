@@ -4,9 +4,12 @@ import { TrucateText } from '../../../components/TrucateText'
 import { ShopContext } from '../../../contexts/ShopContext' 
 
 export default function Product({ data, maxLength }) {
-    const { addToCart, cartItem } = useContext(ShopContext)
+    const { addToCart, wishlistedItem, wishlistItem } = useContext(ShopContext)
 
-    console.log(cartItem)
+    const isWishlisted = (productId) => {
+        const item = wishlistedItem.find((item) => item.product_id === productId);
+        return item && item.is_wishlisted;
+    };
 
     return (
         <>
@@ -19,8 +22,8 @@ export default function Product({ data, maxLength }) {
                                 <Link className={'btn btn-outline-dark btn-square'} onClick={() => addToCart(product.id, product.price)}>
                                     <i className="fas fa-shopping-cart" />
                                 </Link>
-                                <Link className="btn btn-outline-dark btn-square" /* onClick={() => addToLikes(product.id)} */>
-                                    <i className="fas fa-heart" /* style={{color: likeItems[product.id] !== true ? '' : 'red',}} */ />
+                                <Link className="btn btn-outline-dark btn-square" onClick={() => wishlistItem(product.id)} style={{ color: isWishlisted(product.id) ? 'red' : '' }}>  
+                                    <i className="fas fa-heart" />
                                 </Link>
                             </div>
                     </div>

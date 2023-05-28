@@ -16,6 +16,8 @@ class CartController extends Controller
         $carts = $user->carts;
 
         $totalPrice = $carts->sum('price');
+        $wishlistItems = $user->carts()->where('is_wishlisted', true)->get();
+        $wishlistItemCount = $wishlistItems->count();
 
         $totalItems = 0;
         foreach ($carts as $cart) {
@@ -33,6 +35,7 @@ class CartController extends Controller
                     'image' => $cart->image,
                     'normalPrice' => $product->price,
                     'subtotal' => $cart->price * $cart->quantity,
+                    'is_wishlisted' => $cart->is_wishlisted,
                 ];
             }
         }
@@ -42,6 +45,8 @@ class CartController extends Controller
             'totalPrice' => $totalPrice,
             'totalItems' => $totalItems,
             'cartItems' => $cartItems,
+            'wishlistItems' => $wishlistItems,
+            'wishlistItemCount' => $wishlistItemCount,
         ];
 
         return response()->json($response);
@@ -133,6 +138,41 @@ class CartController extends Controller
                 'message' => 'Item not found in cart.'
             ];
         }
+
+        return Response::json($response, 200);
+    }
+
+    public function wishlistItem(Request $request)
+    {
+
+        $productId = $request->input('product_id');
+
+        $product = Product::findOrFail($productId);
+
+        $carts = Cart::where('user_id', auth()->user()->id)->where('product_id', $productId)->first();
+
+        if ($carts) {
+            if ($carts->is_wishlisted === false) {
+                $carts->is_wishlisted = true;
+                $carts->save();
+            } else {
+                $carts->is_wishlisted = false;
+                $carts->save();
+            }
+        }  else {
+            $carts = new Cart();
+            $carts->user_id = auth()->user()->id;
+            $carts->product_id = $productId;
+            $carts->quantity = 0;
+            $carts->image = $product->image;
+            $carts->price = $product->price;
+            $carts->is_wishlisted = true;
+            $carts->save();
+        }
+
+        $response = [
+            'message' => 'Item added to wishlist.'
+        ];
 
         return Response::json($response, 200);
     }

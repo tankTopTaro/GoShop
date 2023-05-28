@@ -4,10 +4,9 @@ import CustomLink from './CustomLink'
 import { ShopContext } from '../contexts/ShopContext'
 
 export const Navbar = () => {
-  const { totalItems } = useContext(ShopContext)
+  const { totalItems, wishlistCount, wishlistedItem } = useContext(ShopContext)
 
-  const totalWish = 0
-
+  console.log(wishlistCount)
   return (
     <>
       <div className="container-fluid bg-dark mb-30">
@@ -86,7 +85,7 @@ export const Navbar = () => {
                     <span
                       className="badge text-secondary border border-secondary rounded-circle"
                       style={{ paddingBottom: 2 }}>
-                        { totalWish > 0 ? totalWish : 0 } 
+                        { wishlistCount > 0 ? wishlistCount : 0 } 
                     </span>
                     <i className="fas fa-shopping-cart text-primary mx-1" />
                     <span
